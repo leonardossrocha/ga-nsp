@@ -13,6 +13,11 @@ In the course, the following heuristics were studied:
 These heuristics were used in seminar presentations where all students selected an article that employed the respective heuristic to use in the mentioned seminar.
 
 
+## Set of Data
+
+A data set was used to maintain standardization in the tests conducted during the implementation of a heuristic to find the best possible solution for the Nurse Scheduling Problem. This data set was found in the paper "*NSPLib – A Nurse Scheduling Problem Library: A tool to evaluate (meta-)heuristic procedures*" that you can find [here](https://www.projectmanagement.ugent.be/sites/default/files/files/nsp/PaperNSPLib.pdf).  
+In this article, you can find the problem instances used in this project. These instances are provided in sets of 25, 50, 75, and 100, where these numbers represent the quantity of nurses. For the project contained in this repository, the problem instances for 25 nurses were considered.
+
 # REFERENCES
 
 #### [CHEN, Jiumei; DAN, Bin; SHI, Jing. A variable neighborhood search approach for the multi-compartment vehicle routing problem with time windows considering carbon emission. Journal of cleaner production, v. 277, p. 123932, 2020.](https://www.sciencedirect.com/science/article/abs/pii/S0959652620339779)
