@@ -16,7 +16,24 @@ These heuristics were used in seminar presentations where all students selected 
 ## Set of Data
 
 A data set was used to maintain standardization in the tests conducted during the implementation of a heuristic to find the best possible solution for the Nurse Scheduling Problem. This data set was found in the paper "*NSPLib – A Nurse Scheduling Problem Library: A tool to evaluate (meta-)heuristic procedures*" that you can find [here](https://www.projectmanagement.ugent.be/sites/default/files/files/nsp/PaperNSPLib.pdf).  
-In this article, you can find the problem instances used in this project. These instances are provided in sets of 25, 50, 75, and 100, where these numbers represent the quantity of nurses. For the project contained in this repository, the problem instances for 25 nurses were considered.
+In this article, you can find the problem instances used in this project. These instances are provided in sets of 25, 50, 75, and 100, where these numbers represent the quantity of nurses. For the project contained in this repository, the problem instances for 25 nurses were considered.  
+It is important to note that the set of files considered for the execution of the algorithm contained in this repository has not been included here as it exceeds the allowed size for repository creation. However, they can be found at this [link](https://www.projectmanagement.ugent.be/research/personnel_scheduling/nsp). You you can download the NSPLib benchmark instances in this site. 
+Here, the N25 instance was used, which refers to the scheduling problem of 25 nurses.  
+
+The constraint files were used, where the fourth shift is considered the free, non-working shift. The cases from 1 to 8 concern the diverse set of files where the planning horizon is limited to seven days.
+
+
+
+##########################################
+Falar sobre as referências abaixo
+
+https://www.projectmanagement.ugent.be/research/personnel_scheduling/nsp
+
+https://github.com/PacktPublishing/Hands-On-Genetic-Algorithms-with-Python/blob/master/Chapter05/02-solve-nurses.py
+
+https://medium.com/@muafirathasnikt/solving-nurse-scheduling-rostering-problems-in-python-d44acc3ed74f
+
+
 
 # REFERENCES
 
