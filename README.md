@@ -22,17 +22,14 @@ Here, the N25 instance was used, which refers to the scheduling problem of 25 nu
 
 The constraint files were used, where the fourth shift is considered the free, non-working shift. The cases from 1 to 8 concern the diverse set of files where the planning horizon is limited to seven days.
 
+## Sources
 
+Some sources was found and used to understand the problem context. They are:
 
-##########################################
-Falar sobre as referências abaixo
+[Hands-on GA with Pythnon](https://github.com/PacktPublishing/Hands-On-Genetic-Algorithms-with-Python/blob/master/Chapter05/02-solve-nurses.py)  
+[Solving Nurse Scheduling/Rostering Problems in Python](https://medium.com/@muafirathasnikt/solving-nurse-scheduling-rostering-problems-in-python-d44acc3ed74f)  
 
-https://www.projectmanagement.ugent.be/research/personnel_scheduling/nsp
-
-https://github.com/PacktPublishing/Hands-On-Genetic-Algorithms-with-Python/blob/master/Chapter05/02-solve-nurses.py
-
-https://medium.com/@muafirathasnikt/solving-nurse-scheduling-rostering-problems-in-python-d44acc3ed74f
-
+In this last one, it is possible to find the repository with the algorithm provided by the author of the article.
 
 
 # REFERENCES
