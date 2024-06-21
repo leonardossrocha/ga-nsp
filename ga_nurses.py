@@ -4,7 +4,6 @@ import numpy as np
 import os
 from contextlib import redirect_stdout
 
-
 # Funções de leitura das matrizes
 #######################################################################
 def ler_mat1(caminho_nsp):
@@ -68,9 +67,9 @@ def ler_arquivos(caminho_base_nsp, caminho_base_gen, num_arquivos_nsp, num_arqui
     return dados_nsp, dados_gen
 
 
-caminho_base_nsp = 'NSPLib/N25'
-caminho_base_gen = 'NSPLib/Cases'
-num_arquivos_nsp = 100
+caminho_base_nsp = '../NSPLib/N25'
+caminho_base_gen = '../NSPLib/Cases'
+num_arquivos_nsp = 7290
 num_arquivos_gen = 8
 
 dados_nsp, dados_gen = ler_arquivos(caminho_base_nsp, caminho_base_gen, num_arquivos_nsp, num_arquivos_gen)
@@ -83,6 +82,63 @@ POPULACAO_SIZE = 100
 GERACOES = 100
 TAXA_MUTACAO = 0.1
 
+""" Bloco que implementa restrição impondo no máximo duas folgas
+def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
+    fitness = 0
+    minimo_dias, maximo_dias = mat_gen[2]
+    minimo_consecutivas, maximo_consecutivas, minimo_turno, maximo_turno = mat_gen[3][0]
+    max_folgas = 2  # Limite máximo de folgas permitido
+
+    for enfermeiro_idx, enfermeiro in enumerate(individuo):
+        if enfermeiro_idx >= len(preferencias):
+            continue
+        num_dias_trabalhados = sum(1 for turno in enfermeiro if turno != "Folga")
+        num_folgas = enfermeiro.count("Folga")
+
+        # Penalizar se o número de folgas exceder o máximo permitido
+        if num_folgas > max_folgas:
+            fitness -= (num_folgas - max_folgas) * 10  # Penalidade maior para folgas extras
+
+        for i in range(1, NUM_DIAS):
+            if i >= len(enfermeiro):
+                continue
+            if enfermeiro[i - 1] == "Tarde" and enfermeiro[i] == "Manhã":
+                fitness -= 1
+            if enfermeiro[i - 1] == "Noite" and enfermeiro[i] == "Manhã":
+                fitness -= 1
+            if enfermeiro[i - 1] == "Noite" and enfermeiro[i] == "Tarde":
+                fitness -= 1
+        if num_dias_trabalhados < minimo_dias:
+            fitness -= (minimo_dias - num_dias_trabalhados)
+        elif num_dias_trabalhados > maximo_dias:
+            fitness -= (num_dias_trabalhados - maximo_dias)
+        consecutivas = 1
+        for i in range(1, NUM_DIAS):
+            if i >= len(enfermeiro):
+                continue
+            if enfermeiro[i] == enfermeiro[i - 1] and enfermeiro[i] != "Folga":
+                consecutivas += 1
+            else:
+                if consecutivas < minimo_consecutivas:
+                    fitness -= (minimo_consecutivas - consecutivas)
+                elif consecutivas > maximo_consecutivas:
+                    fitness -= (consecutivas - maximo_consecutivas)
+                consecutivas = 1
+        for turno in TURNOS:
+            if turno != "Folga":
+                num_turno = enfermeiro.count(turno)
+                if num_turno < minimo_turno:
+                    fitness -= (minimo_turno - num_turno)
+                elif num_turno > maximo_turno:
+                    fitness -= (num_turno - maximo_turno)
+        for i in range(NUM_DIAS):
+            if enfermeiro_idx >= len(preferencias) or i >= len(preferencias[enfermeiro_idx]):
+                continue
+            turno = enfermeiro[i]
+            preferencia = preferencias[enfermeiro_idx][i]
+            fitness += preferencia
+    return fitness
+"""
 
 def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
     fitness = 0
@@ -132,10 +188,20 @@ def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
             fitness += preferencia
     return fitness
 
-
 def criar_individuo():
     return [[random.choice(TURNOS) for _ in range(NUM_DIAS)] for _ in range(NUM_ENFERMEIROS)]
 
+""" Implementa restrição de no máximo duas folgas
+def criar_individuo():
+    individuo = []
+    for _ in range(NUM_ENFERMEIROS):
+        turnos = ["Manhã", "Tarde", "Noite"] * (NUM_DIAS // 3)
+        folgas = ["Folga"] * 2
+        turnos.extend(folgas)
+        random.shuffle(turnos)
+        individuo.append(turnos)
+    return individuo
+"""
 
 def criar_populacao():
     return [criar_individuo() for _ in range(POPULACAO_SIZE)]
@@ -158,10 +224,12 @@ def mutacao(individuo):
 
 def algoritmo_genetico(preferencias, matriz_turnos, mat_gen):
     populacao = criar_populacao()
+    tempo_total_geracoes = 0  # Inicializa o tempo total das gerações
     inicio = time.time()
 
     for geracao in range(GERACOES):
         print(f"Geração {geracao + 1}")
+        inicio_geracao = time.time()  # Tempo de início da geração
         populacao = sorted(populacao, key=lambda ind: avaliar_individuo(ind, preferencias, matriz_turnos, mat_gen),
                            reverse=True)
         nova_populacao = populacao[:POPULACAO_SIZE // 2]
@@ -176,6 +244,11 @@ def algoritmo_genetico(preferencias, matriz_turnos, mat_gen):
                                      reverse=True)[:POPULACAO_SIZE // 2]
         populacao[-len(melhores_individuos):] = melhores_individuos
 
+        fim_geracao = time.time()  # Tempo de fim da geração
+        tempo_geracao = fim_geracao - inicio_geracao  # Tempo gasto na geração
+        tempo_total_geracoes += tempo_geracao  # Acumula o tempo total
+
+        print(f"Tempo da geração {geracao + 1}: {tempo_geracao:.2f} segundos")
         for i, individuo in enumerate(populacao):
             print(
                 f"Indivíduo {i + 1}: {individuo}, Fitness: {avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen)}")
@@ -184,6 +257,7 @@ def algoritmo_genetico(preferencias, matriz_turnos, mat_gen):
     fim = time.time()
     tempo_total = fim - inicio
     print(f"Tempo total de processamento: {tempo_total:.2f} segundos")
+    print(f"Tempo total de todas as gerações: {tempo_total_geracoes:.2f} segundos")
 
     melhor_individuo = max(populacao, key=lambda ind: avaliar_individuo(ind, preferencias, matriz_turnos, mat_gen))
     return melhor_individuo, avaliar_individuo(melhor_individuo, preferencias, matriz_turnos, mat_gen), tempo_total
