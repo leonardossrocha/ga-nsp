@@ -56,6 +56,13 @@ The first one was created with the algorithm executed with the number of generat
 ### Results with variables set to 100
 
 
+### CSV Files
+
+In the repository, you will find all the .csv files created during the procedures described here. They are available:
+
+* [system_usage_before.csv]() - Created during the execution of the ga_nurses.py algorithm.
+* [system_usage_after.csv]() -  Created before the execution of the ga_nurses.py algorithm
+
 
 # REFERENCES
 
