@@ -60,8 +60,8 @@ The first one was created with the algorithm executed with the number of generat
 
 In the repository, you will find all the .csv files created during the procedures described here. They are available:
 
-* [system_usage_before.csv]() - Created during the execution of the ga_nurses.py algorithm.
-* [system_usage_after.csv]() -  Created before the execution of the ga_nurses.py algorithm
+* [system_usage_before.csv](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/system_usage_before.csv) - Created during the execution of the ga_nurses.py algorithm.
+* [system_usage_after.csv](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/system_usage_after.csv) -  Created before the execution of the ga_nurses.py algorithm
 
 
 # REFERENCES
