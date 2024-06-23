@@ -48,6 +48,9 @@ After that, it was necessary to process the data in a spreadsheet, categorize an
 
 The first one was created with the algorithm executed with the number of generations and population size set to 10. In the second one, this number was changed to 100.Those variables are located on lines 84 and 85 of the algorithm.
 
+**At the end of the execution of 100 generations and 100 populations of individuals, the best individual obtained showed a Fitness of 385, with the processing time of this individual being around 2.90 seconds.**
+
+
 ### Results with variables set to 10
 
 ![results With 10](images/Partial_results_10generations.png)
