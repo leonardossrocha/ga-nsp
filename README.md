@@ -64,6 +64,11 @@ In the repository, you will find all the .csv files created during the procedure
 
 * [system_usage_before.csv](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/system_usage_before.csv) - Created during the execution of the ga_nurses.py algorithm.
 * [system_usage_after.csv](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/system_usage_after.csv) -  Created before the execution of the ga_nurses.py algorithm
+* [extract_results10.csv](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/extract_results10.csv) - Raw result file of 10 generations.
+* [extract_results10_treated.xls](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/extract_results10_treated.xls) - Processed result file of 10 generations
+* [extract_results100_treated.xls](https://github.com/leonardossrocha/ga-nsp/blob/master/csv_files/extract_results100_treated.xls) - Processed result file of 100 generations
+
+Unfortunately, it was not possible to host the raw result file of 100 generations, because it exceeded the allowed storage size on this platform.
 
 
 # REFERENCES
