@@ -6,6 +6,7 @@ from contextlib import redirect_stdout
 
 # Funções de leitura das matrizes
 #######################################################################
+# Method to collect the first matrix
 def ler_mat1(caminho_nsp):
     with open(caminho_nsp, 'r') as file:
         linha = file.readline().strip().split()
@@ -13,6 +14,7 @@ def ler_mat1(caminho_nsp):
     return NUM_ENF, NUM_D, NUM_T
 
 
+# Method to collect the second matrix
 def ler_mat2(caminho_nsp, start_line_mat2=0):
     mat2 = []
     with open(caminho_nsp, 'r') as file:
@@ -23,7 +25,7 @@ def ler_mat2(caminho_nsp, start_line_mat2=0):
             mat2.append(linha)
     return mat2
 
-
+# Method to collect the third and largest matrix
 def ler_mat3(caminho_nsp, start_line_mat3=0):
     mat3 = []
     with open(caminho_nsp, 'r') as file:
@@ -34,7 +36,7 @@ def ler_mat3(caminho_nsp, start_line_mat3=0):
             mat3.append(linha)
     return mat3
 
-
+# Method to collect matrices from files .gen
 def ler_mat_gen(caminho_gen):
     with open(caminho_gen, 'r') as file:
         mat1 = list(map(int, file.readline().strip().split()))
@@ -50,7 +52,7 @@ def ler_mat_gen(caminho_gen):
             mat4.append(linha)
     return mat1, mat2, mat3, mat4
 
-
+# Method to read files and use matrix collection methods in each file
 def ler_arquivos(caminho_base_nsp, caminho_base_gen, num_arquivos_nsp, num_arquivos_gen):
     dados_nsp = []
     dados_gen = []
@@ -67,6 +69,7 @@ def ler_arquivos(caminho_base_nsp, caminho_base_gen, num_arquivos_nsp, num_arqui
     return dados_nsp, dados_gen
 
 
+# files path [.nsp and .gen]
 caminho_base_nsp = '../NSPLib/N25'
 caminho_base_gen = '../NSPLib/Cases'
 num_arquivos_nsp = 7290
@@ -75,71 +78,14 @@ num_arquivos_gen = 8
 dados_nsp, dados_gen = ler_arquivos(caminho_base_nsp, caminho_base_gen, num_arquivos_nsp, num_arquivos_gen)
 
 # Constantes para o algoritmo genético
-NUM_ENFERMEIROS = dados_nsp[0][0]
-NUM_DIAS = dados_nsp[0][1]
-TURNOS = ["Manhã", "Tarde", "Noite", "Folga"]
-POPULACAO_SIZE = 100
-GERACOES = 100
-TAXA_MUTACAO = 0.1
+NUM_ENFERMEIROS = dados_nsp[0][0]               # Number of nurses
+NUM_DIAS = dados_nsp[0][1]                      # number of days
+TURNOS = ["Manhã", "Tarde", "Noite", "Folga"]   # shifs [Morning, afternoon, night, and day off]
+POPULACAO_SIZE = 100                            # population size
+GERACOES = 100                                  # number of generations
+TAXA_MUTACAO = 0.1                              # mutation rate
 
-""" Bloco que implementa restrição impondo no máximo duas folgas
-def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
-    fitness = 0
-    minimo_dias, maximo_dias = mat_gen[2]
-    minimo_consecutivas, maximo_consecutivas, minimo_turno, maximo_turno = mat_gen[3][0]
-    max_folgas = 2  # Limite máximo de folgas permitido
-
-    for enfermeiro_idx, enfermeiro in enumerate(individuo):
-        if enfermeiro_idx >= len(preferencias):
-            continue
-        num_dias_trabalhados = sum(1 for turno in enfermeiro if turno != "Folga")
-        num_folgas = enfermeiro.count("Folga")
-
-        # Penalizar se o número de folgas exceder o máximo permitido
-        if num_folgas > max_folgas:
-            fitness -= (num_folgas - max_folgas) * 10  # Penalidade maior para folgas extras
-
-        for i in range(1, NUM_DIAS):
-            if i >= len(enfermeiro):
-                continue
-            if enfermeiro[i - 1] == "Tarde" and enfermeiro[i] == "Manhã":
-                fitness -= 1
-            if enfermeiro[i - 1] == "Noite" and enfermeiro[i] == "Manhã":
-                fitness -= 1
-            if enfermeiro[i - 1] == "Noite" and enfermeiro[i] == "Tarde":
-                fitness -= 1
-        if num_dias_trabalhados < minimo_dias:
-            fitness -= (minimo_dias - num_dias_trabalhados)
-        elif num_dias_trabalhados > maximo_dias:
-            fitness -= (num_dias_trabalhados - maximo_dias)
-        consecutivas = 1
-        for i in range(1, NUM_DIAS):
-            if i >= len(enfermeiro):
-                continue
-            if enfermeiro[i] == enfermeiro[i - 1] and enfermeiro[i] != "Folga":
-                consecutivas += 1
-            else:
-                if consecutivas < minimo_consecutivas:
-                    fitness -= (minimo_consecutivas - consecutivas)
-                elif consecutivas > maximo_consecutivas:
-                    fitness -= (consecutivas - maximo_consecutivas)
-                consecutivas = 1
-        for turno in TURNOS:
-            if turno != "Folga":
-                num_turno = enfermeiro.count(turno)
-                if num_turno < minimo_turno:
-                    fitness -= (minimo_turno - num_turno)
-                elif num_turno > maximo_turno:
-                    fitness -= (num_turno - maximo_turno)
-        for i in range(NUM_DIAS):
-            if enfermeiro_idx >= len(preferencias) or i >= len(preferencias[enfermeiro_idx]):
-                continue
-            turno = enfermeiro[i]
-            preferencia = preferencias[enfermeiro_idx][i]
-            fitness += preferencia
-    return fitness
-"""
-
+# Method to evaluate individual
 def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
     fitness = 0
     minimo_dias, maximo_dias = mat_gen[2]
@@ -188,22 +134,12 @@ def avaliar_individuo(individuo, preferencias, matriz_turnos, mat_gen):
             fitness += preferencia
     return fitness
 
+# Method to create individual
 def criar_individuo():
     return [[random.choice(TURNOS) for _ in range(NUM_DIAS)] for _ in range(NUM_ENFERMEIROS)]
 
-""" Implementa restrição de no máximo duas folgas
-def criar_individuo():
-    individuo = []
-    for _ in range(NUM_ENFERMEIROS):
-        turnos = ["Manhã", "Tarde", "Noite"] * (NUM_DIAS // 3)
-        folgas = ["Folga"] * 2
-        turnos.extend(folgas)
-        random.shuffle(turnos)
-        individuo.append(turnos)
-    return individuo
-"""
-
-def criar_populacao():
+# Method to create population
+def criar_populacao(): 
     return [criar_individuo() for _ in range(POPULACAO_SIZE)]
 
 
@@ -213,7 +149,7 @@ def crossover(parent1, parent2):
     child2 = [parent2[i][:ponto_de_corte] + parent1[i][ponto_de_corte:] for i in range(NUM_ENFERMEIROS)]
     return child1, child2
 
-
+# Method to create mutation
 def mutacao(individuo):
     for i in range(NUM_ENFERMEIROS):
         if random.random() < TAXA_MUTACAO:
@@ -221,7 +157,7 @@ def mutacao(individuo):
             individuo[i][dia] = random.choice(TURNOS)
     return individuo
 
-
+#Method to create Genetic Algorithm
 def algoritmo_genetico(preferencias, matriz_turnos, mat_gen):
     populacao = criar_populacao()
     tempo_total_geracoes = 0  # Inicializa o tempo total das gerações
@@ -262,7 +198,7 @@ def algoritmo_genetico(preferencias, matriz_turnos, mat_gen):
     melhor_individuo = max(populacao, key=lambda ind: avaliar_individuo(ind, preferencias, matriz_turnos, mat_gen))
     return melhor_individuo, avaliar_individuo(melhor_individuo, preferencias, matriz_turnos, mat_gen), tempo_total
 
-
+# Send the results to file called resultado.txt
 with open('resultado.txt', 'w') as f:
     with redirect_stdout(f):
         for idx_nsp, (NUM_ENF, NUM_D, NUM_T, matriz2, matriz3) in enumerate(dados_nsp):
